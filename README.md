@@ -1,3 +1,3 @@
 # OSI2017-Grupa-1 
-MasterMind Analyze
-Projektni zadatak iz predmeta Osnovi softverskog inženjerstva
+MasterMind Analyze - 
+Sistem za analizu troškova proizvoljne kompanije
