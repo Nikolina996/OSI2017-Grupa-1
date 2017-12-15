@@ -14,6 +14,8 @@ User::~User()
 
 void User::userMenu() //basic menu
 {
+	cout<<"/tMastermind Analyze"<<endl;
+	cout << "Enter the number of the option:" << endl << "[1] Log in" << endl << "[2] Sign up" << endl << "[0]Exit" << endl;
 }
 
 void User::signUp()
