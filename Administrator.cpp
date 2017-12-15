@@ -20,7 +20,29 @@ void Administrator::userMenu()
 
 bool Administrator::logIn()
 {
-	return false;
+	string username, password, user, pass, name, surname;
+	cout << "Your username and password: ";
+	cin >> username >> password;
+	ifstream adminFile("admin_podaci.txt");
+	if (adminFile.is_open())
+	{
+		adminFile >> name >> surname >> user >> pass;
+		if (username == user && password == pass)
+		{
+			cout << "Login successful!" << endl;
+			return true;
+		}
+		else
+		{
+			cout << "Username or password do not match." << endl;
+			return false;
+		}
+	}
+	else
+	{
+		cout << "Could not open info file." << endl;
+		return false;
+	}
 }
 
 void Administrator::setAccount()
