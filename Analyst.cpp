@@ -6,7 +6,7 @@
 #include "Windows.h"
 using namespace std;
 
-Analyst::Analyst()
+Analyst::Analyst(char *a, char *b, char *c, char *d):User(a, b, c, d)
 {}
 
 Analyst::~Analyst()
@@ -14,6 +14,8 @@ Analyst::~Analyst()
 
 void Analyst::userMenu()
 {
+	cout<<"/tMastermind Analyze"<<endl;
+	cout << "Enter the number of the option:" << endl << "[1] Bills overview" << endl << "[2] Account control" << endl << "[0]Exit" << endl;
 }
 
 bool Analyst::logIn()
