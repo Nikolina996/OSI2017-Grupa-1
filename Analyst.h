@@ -10,5 +10,6 @@ public:
 	bool logIn() override;
 	void setAccount() override;
 	void reviewOfProcessedData();
+	void accountControl();
 };
 
