@@ -4,8 +4,6 @@
 class Administrator: public User
 {
 public:
-	Administrator(char *, char *, char *, char*);
-	~Administrator();
 	void userMenu() override;
 	bool logIn() override;
 	void setAccount() override;
