@@ -83,11 +83,6 @@ int Administrator::deleteUser()
 	return 0;
 }
 
-int Administrator::addUser()
-{
-	return 0;
-}
-
 void Administrator::setUserAccount()
 {
 }
