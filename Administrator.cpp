@@ -17,8 +17,18 @@ Administrator::~Administrator()
 
 void Administrator::userMenu()
 {
+	int i; 
 	cout<<"/tMastermind Analyze"<<endl;
 	cout << "Enter the number of the option:" << endl << "[1] Currency adjustment" << endl << "[2] Review and manage user accounts" << endl << "[0]Exit" << endl;
+	cin>>i;
+	if (i==0)
+	    return; 
+	else if (i==1)
+		currencyChange();
+	else if (i==2)
+		reviewAndManageUserAccount();
+	else userMenu();
+	
 }
 
 bool Administrator::logIn()
@@ -53,7 +63,9 @@ int i;
 cout<<"/tMastermind Analyze"<<endl;
 	cout << "Enter the number of the option:" << endl << "[1] New requests" << endl << "[2] Delete requests" <<"[3] Manage user accounts"<<"[4] Review user accounts"<<"[5] Add accounts" << endl << "[0]Exit" << endl;
         cin>>i;
-	if (i==1)
+	if (i==0)
+           return;
+	else if (i==1)
 	   newRequests();
 	else if (i==2)
 	   deleteUser();
@@ -61,8 +73,9 @@ cout<<"/tMastermind Analyze"<<endl;
 	    menagingUserAccounts();
 	else if (i==4)
 	    reviewUserAccount();
-	else 
+	else if (i==5)
 	    addAccount();
+	else reviewAndManageUserAccounts();
 	
 }
 
