@@ -47,6 +47,24 @@ bool Administrator::logIn()
 		return false;
 	}
 }
+void reviewAndManageUserAccounts()
+{
+int i;
+cout<<"/tMastermind Analyze"<<endl;
+	cout << "Enter the number of the option:" << endl << "[1] New requests" << endl << "[2] Delete requests" <<"[3] Manage user accounts"<<"[4] Review user accounts"<<"[5] Add accounts" << endl << "[0]Exit" << endl;
+        cin>>i;
+	if (i==1)
+	   newRequests();
+	else if (i==2)
+	   deleteUser();
+	else if (i==3)
+	    menagingUserAccounts();
+	else if (i==4)
+	    reviewUserAccount();
+	else 
+	    addAccount();
+	
+}
 
 void Administrator::setAccount()
 {
