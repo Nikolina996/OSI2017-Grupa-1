@@ -11,4 +11,7 @@ public:
 	virtual void userMenu();
 	virtual void setAccount() = 0;
 	virtual void signUp();
+protected:
+        char *name, *surname, *user_name, *password;
+
 };
