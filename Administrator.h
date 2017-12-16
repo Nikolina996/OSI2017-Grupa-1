@@ -11,10 +11,9 @@ public:
 	void setAccount() override;
 	void reviewAndManageUserAccounts();
 	void currencyChange();
-	void menagingUserAccounts();
 	void newRequests();
 	void reviewUserAccount();
-	int deleteUser();
+	void deleteUser();
 	void setUserAccount();
 	void addAccount();
 };
