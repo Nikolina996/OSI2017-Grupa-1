@@ -5,11 +5,21 @@
 using namespace std;
 
 
-User::User()
-{}
+User::User(char *a, char *b, char* c, char *d)
+{
+	name=new char[strlen(a)+1];
+	surname=new char[strlen(b)+1];
+	user_name=new char[strlen(c)+1];
+	password=new char[strlen(d)+1];
+}
 
 User::~User()
-{}
+{
+	delete[] name;
+	delete[] surname;
+	delete[] user_name;
+	delete[] password;
+}
 
 
 void User::userMenu() //basic menu
