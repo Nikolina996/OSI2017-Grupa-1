@@ -6,12 +6,6 @@
 #include "Windows.h"
 using namespace std;
 
-Analyst::Analyst(char *a, char *b, char *c, char *d):User(a, b, c, d)
-{}
-
-Analyst::~Analyst()
-{}
-
 void Analyst::userMenu()
 {
 	int i;
