@@ -4,7 +4,7 @@
 class Analyst:public User
 {
 public:
-	Analyst();
+	Analyst(char*, char*, char*, char*);
 	~Analyst();
 	void userMenu() override;
 	bool logIn() override;
