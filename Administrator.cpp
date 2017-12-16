@@ -87,13 +87,8 @@ void Administrator::currencyChange()
 {
 }
 
-void Administrator::menagingUserAccounts()
+void Administrator::deleteUser()
 {
-}
-
-int Administrator::deleteUser()
-{
-	return 0;
 }
 
 void Administrator::setUserAccount()
