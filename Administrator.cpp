@@ -6,16 +6,19 @@
 #include "User.h"
 
 
-Administrator::Administrator()
+Administrator::Administrator(char *a, char *b, char *c, char *d):User(a, b, c, d)
 {
 }
 
 Administrator::~Administrator()
 {
+
 }
 
 void Administrator::userMenu()
 {
+	cout<<"/tMastermind Analyze"<<endl;
+	cout << "Enter the number of the option:" << endl << "[1] Currency adjustment" << endl << "[2] Review and manage user accounts" << endl << "[0]Exit" << endl;
 }
 
 bool Administrator::logIn()
