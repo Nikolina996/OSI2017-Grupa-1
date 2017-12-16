@@ -5,16 +5,6 @@
 #include "Administrator.h"
 #include "User.h"
 
-
-Administrator::Administrator(char *a, char *b, char *c, char *d):User(a, b, c, d)
-{
-}
-
-Administrator::~Administrator()
-{
-
-}
-
 void Administrator::userMenu()
 {
 	int i; 
