@@ -18,11 +18,13 @@ void Analyst::userMenu()
 	cout<<"/tMastermind Analyze"<<endl;
 	cout << "Enter the number of the option:" << endl << "[1] Bills overview" << endl << "[2] Account control" << endl << "[0]Exit" << endl;
 	cin>>i;
-	if (i==1)
+	if (i==0)
+	    return;
+	else if (i==1)
 	    reviewOfProcessedData();
 	else if (i==2)
 	    accountControl();
-	else return;
+	else userMenu();
 }
 
 bool Analyst::logIn()
