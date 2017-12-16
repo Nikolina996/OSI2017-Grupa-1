@@ -5,7 +5,7 @@
 class User
 {
 public:
-	User();
+	User(char *, char*, char*, char*);
 	~User();
 	virtual bool logIn() = 0;
 	virtual void userMenu();
