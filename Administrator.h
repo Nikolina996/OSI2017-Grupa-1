@@ -10,7 +10,7 @@ public:
 	void reviewAndManageUserAccounts();
 	void currencyChange();
 	void newRequests();
-	void reviewUserAccount();
+	void reviewUserAccounts();
 	void deleteUser();
 };
 
