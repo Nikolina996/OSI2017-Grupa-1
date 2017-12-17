@@ -12,7 +12,5 @@ public:
 	void newRequests();
 	void reviewUserAccount();
 	void deleteUser();
-	void setUserAccount();
-	void addAccount();
 };
 
