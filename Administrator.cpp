@@ -81,11 +81,7 @@ void Administrator::deleteUser()
 {
 }
 
-void Administrator::setUserAccount()
-{
-}
-
-void Administrator::addAccount()
+void Administrator::newRequests()
 {
 	string name, surname, username, line; char PIN[5]; int input, numberOfRequests = 0; int c=NULL;
 	ifstream file("lista_cekanja.txt");
