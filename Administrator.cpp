@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include <iomanip>
 
 #include "Administrator.h"
 #include "User.h"
@@ -133,4 +134,22 @@ void Administrator::newRequests()
 	std::ofstream ofs;
 	ofs.open("lista_cekanja.txt", std::ofstream::out | std::ofstream::trunc);
 	ofs.close();
+}
+void reviewUserAccounts()
+{
+	cout << "List of all registered users:" << endl;
+	ifstream file("korisnici.txt");
+	string name, surname, username, PIN;
+	cout << "_______________________________________________________" << endl;
+	if (file.is_open())
+	{
+		while (!file.eof())
+		{
+			file >> name >> surname >> username >> PIN;
+			cout << setw(15) << name << setw(15) << surname << setw(25) << username << endl;
+		}
+	}
+	else
+		cout << "Could not open 'korisnici.txt' file." << endl;
+	cout << "_______________________________________________________" << endl;
 }
