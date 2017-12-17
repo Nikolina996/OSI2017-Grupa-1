@@ -72,6 +72,43 @@ cout<<"/tMastermind Analyze"<<endl;
 
 void Administrator::setAccount()
 {
+	string name, surname, username, password;
+	char PIN[5], oldPIN[5]; int sum = 0;
+	ifstream file("admin.txt");
+	if (file.is_open())
+	{
+		file >> name >> surname >> username >> password;
+		file.close();
+	}
+	else cout << "Could not open 'admin.txt' file." << endl;
+	do
+	{
+		cout << "Please type in old password: "; cin >> oldPIN;
+		if (password.compare(oldPIN) == 0)
+		{
+			do
+			{
+				cout << "Enter new password: "; cin >> PIN;
+				for (int i = 0; i < 4; i++)
+					if (isdigit(PIN[i])) sum++;
+				if (sum != 4)
+				{
+					cout << "Structure of password must be 4 positive numbers." << endl;
+					sum = 0;
+				}
+			} while (sum != 4);
+		}
+		else cout << "Passwords do not match. Enter again:" << endl;
+	} while (password.compare(oldPIN) != 0);
+	ofstream newInfo("admin.txt", ofstream::out | ofstream::trunc);
+	if (newInfo.is_open())
+	{
+		newInfo << name << " " << surname << " " << username << " " << PIN;
+		newInfo.close();
+		cout << "Password successfuly changed!" << endl;
+	}
+	else
+		cout << "Could not open 'admin.txt' file" << endl;
 }
 
 void Administrator::currencyChange()
