@@ -9,5 +9,8 @@ public:
 	void setAccount() override;
 	void reviewOfProcessedData();
 	void accountControl();
+	void viewingDataForAParticularUser();
+	void reviewDataForASpecificProduct();
+	void viewDataForASpecificMonth();
 };
 
