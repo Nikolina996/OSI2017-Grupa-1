@@ -104,3 +104,15 @@ void Analyst::reviewOfProcessedData()
 {
 }
 
+void Analyst::viewingDataForAParticularUser()
+{
+}
+
+void Analyst::reviewDataForASpecificProduct()
+{
+}
+
+void Analyst::viewDataForASpecificMonth()
+{
+}
+
