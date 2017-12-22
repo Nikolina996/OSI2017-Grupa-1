@@ -143,7 +143,7 @@ void Administrator::newRequests()
 				{
 					file >> name >> surname >> username >> PIN;
 					cout << endl << "Request from: " << endl;
-					cout << name << " " << surname << " " << username << " " << PIN << endl << endl;
+					cout << name << " " << surname << " " << username << endl << endl;
 					do {
 						cout << "[1] Approve the registration request" << endl;
 						cout << "[0] Disapprove the registration request" << endl;
