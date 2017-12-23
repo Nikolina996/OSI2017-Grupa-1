@@ -96,8 +96,41 @@ bool Analyst::logIn()
 	} while (check || c_check == 'A');
 }
 
-void Analyst::setAccount()
+void setAccount(string tmpUser)
 {
+	
+	string username, PIN,oldPIN, newPIN="4444"; int i, sum=0;
+	fstream file("korisnici.txt", ofstream::out | ifstream::in);
+	if (file.is_open())
+	{
+		while (!file.eof() && username != tmpUser)
+			file >> username>>oldPIN;
+		i = file.tellp();
+		file.seekp(i-4);
+		do
+		{
+			cout << "Please type in old password: "; cin >> PIN;
+			if (PIN.compare(oldPIN) == 0)
+			{
+				do
+				{
+					cout << "Enter new password: "; cin >> newPIN;
+					for (int i = 0; i < 4; i++)
+						if (isdigit(newPIN[i])) sum++;
+					if (sum != 4)
+					{
+						cout << "Structure of password must be 4 positive numbers." << endl;
+						sum = 0;
+					}
+				} while (sum != 4);
+			}
+			else cout << "Passwords do not match. Enter again:" << endl;
+		} while (PIN.compare(oldPIN) != 0);
+		file << newPIN;
+		cout << "Password successfuly changed!" << endl;
+	}
+	else
+		cout << "Could not open 'users.txt' file" << endl;
 }
 
 void Analyst::reviewOfProcessedData()
