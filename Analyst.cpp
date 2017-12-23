@@ -99,7 +99,8 @@ bool Analyst::logIn()
 void setAccount(string tmpUser)
 {
 	
-	string username, PIN,oldPIN, newPIN="4444"; int i, sum=0;
+	string username, PIN,oldPIN, newPIN, tmpUser; int i, sum=0;
+	tmpUser=getUsername();
 	fstream file("korisnici.txt", ofstream::out | ifstream::in);
 	if (file.is_open())
 	{
