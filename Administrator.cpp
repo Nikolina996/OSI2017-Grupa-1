@@ -10,7 +10,7 @@ void Administrator::userMenu()
 {
 	int i; 
 	cout<<"/tMastermind Analyze"<<endl;
-	cout << "Enter the number of the option:" << endl << "[1] Currency adjustment" << endl << "[2] Review and manage user accounts" << endl << "[0]Back to the menu" << endl;
+	cout << "Enter the number of the option:" << endl << "[1] Currency adjustment" << endl << "[2] Review and manage user accounts" << endl << "[0]Log out" << endl;
 	cin>>i;
 	if (i==0)
 	    	User::userMenu(); 
@@ -51,6 +51,7 @@ bool Administrator::logIn()
 void reviewAndManageUserAccounts()
 {
 int i;
+system("CLS");
 cout<<"/tMastermind Analyze"<<endl;
 	cout << "Enter the number of the option:" << endl << "[1] New requests" << endl << "[2] Delete requests"<<endl<<"[3] Review user accounts"<< endl << "[0]Back to the menu" << endl;
         cin>>i;
