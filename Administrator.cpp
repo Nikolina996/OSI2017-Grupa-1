@@ -52,21 +52,17 @@ void reviewAndManageUserAccounts()
 {
 int i;
 cout<<"/tMastermind Analyze"<<endl;
-	cout << "Enter the number of the option:" << endl << "[1] New requests" << endl << "[2] Delete requests" <<"[3] Manage user accounts"<<"[4] Review user accounts"<<"[5] Add accounts" << endl << "[0]Exit" << endl;
+	cout << "Enter the number of the option:" << endl << "[1] New requests" << endl << "[2] Delete requests"<<endl<<"[3] Review user accounts"<< endl << "[0]Back to the menu" << endl;
         cin>>i;
 	if (i==0)
-           return;
+           userMenu();
 	else if (i==1)
 	   newRequests();
 	else if (i==2)
 	   deleteUser();
 	else if (i==3)
-	    menagingUserAccounts();
-	else if (i==4)
 	    reviewUserAccount();
-	else if (i==5)
-	    addAccount();
-	else reviewAndManageUserAccounts();
+	else reviewAndManageUserAccouts();
 	
 }
 
