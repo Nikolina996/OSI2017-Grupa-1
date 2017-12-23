@@ -10,10 +10,10 @@ void Administrator::userMenu()
 {
 	int i; 
 	cout<<"/tMastermind Analyze"<<endl;
-	cout << "Enter the number of the option:" << endl << "[1] Currency adjustment" << endl << "[2] Review and manage user accounts" << endl << "[0]Exit" << endl;
+	cout << "Enter the number of the option:" << endl << "[1] Currency adjustment" << endl << "[2] Review and manage user accounts" << endl << "[0]Back to the menu" << endl;
 	cin>>i;
 	if (i==0)
-	    return; 
+	    	User::userMenu(); 
 	else if (i==1)
 		currencyChange();
 	else if (i==2)
