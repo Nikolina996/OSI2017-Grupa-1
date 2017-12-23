@@ -96,9 +96,8 @@ bool Analyst::logIn()
 	} while (check || c_check == 'A');
 }
 
-void setAccount(string tmpUser)
+void setAccount()
 {
-	
 	string username, PIN,oldPIN, newPIN, tmpUser; int i, sum=0;
 	tmpUser=getUsername();
 	fstream file("korisnici.txt", ofstream::out | ifstream::in);
