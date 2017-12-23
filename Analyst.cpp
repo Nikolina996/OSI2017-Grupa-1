@@ -10,14 +10,14 @@ void Analyst::userMenu()
 {
 	int i;
 	cout<<"/tMastermind Analyze"<<endl;
-	cout << "Enter the number of the option:" << endl << "[1] Bills overview" << endl << "[2] Account control" << endl << "[0]Back to the menu" << endl;
+	cout << "Enter the number of the option:" << endl <<"[1] Review of processed data" << endl << "[2] Set account" << endl << "[0] Log out" << endl;
 	cin>>i;
 	if (i==0)
 	    User::userMenu();
 	else if (i==1)
 	    reviewOfProcessedData();
 	else if (i==2)
-	    accountControl();
+	    setAccount();
 	else userMenu();
 }
 
@@ -102,6 +102,19 @@ void Analyst::setAccount()
 
 void Analyst::reviewOfProcessedData()
 {
+	int i; 
+	system ("CLS");
+	cout<<"/tMastermind Analyze"<<endl;
+	cout << "Enter the number of the option:" << endl <<"[1] Viewing data for a particular user"<<endl<<"[2] Review data for a specific product"<<endl<<"[3] View data for a specific month"<<endl<<"[0] Back to the menu"<<endl;
+	if (i==1)
+		ViewingDataForAParticularUser();
+	else if(i==2)
+		RewievDataForASpecificProduct();
+	else if (i==3)
+		ViewDataForASpecificMonth(); 
+	else if (i==0)
+		userMenu(); 
+	else reviewOfProcessedData();
 }
 
 void Analyst::viewingDataForAParticularUser()
