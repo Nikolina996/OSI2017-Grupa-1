@@ -112,7 +112,7 @@ void Administrator::changeCurrency()
 {
 	cout << "Function is not yet availabe." << endl;
 	return;
-	
+	//Temporary currency is global string
 	int option; string newCURR;
 	cout << "Temporary currency: " << tempCurrency << endl;
 	cout << "Change to:" << endl << "[1]bam [2]usd [3]euro" << endl;
