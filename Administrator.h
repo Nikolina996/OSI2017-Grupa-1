@@ -12,5 +12,6 @@ public:
 	void newRequests();
 	void reviewUserAccounts();
 	void deleteUser();
+	double currencyConverter(std::string, std::string, double);
 };
 
