@@ -108,8 +108,23 @@ void Administrator::setAccount()
 		cout << "Could not open 'admin.txt' file" << endl;
 }
 
-void Administrator::currencyChange()
+void Administrator::changeCurrency()
 {
+	cout << "Function is not yet availabe." << endl;
+	return;
+	
+	int option; string newCURR;
+	cout << "Temporary currency: " << tempCurrency << endl;
+	cout << "Change to:" << endl << "[1]bam [2]usd [3]euro" << endl;
+	do { cin >> option; } while (option < 1 || option > 3);
+	if (option == 1) newCURR = "bam";
+	else if (option == 2) newCURR = "usd";
+	else if (option == 3) newCURR = "euro";
+	/*
+		1) OPEN ALL NEEDED FILES
+		2) OVERWRITE CURRENCY VIA currencyConverter(string, string, double) function
+		2) CLOSE ALL FILES
+	*/
 }
 
 void Administrator::deleteUser()
