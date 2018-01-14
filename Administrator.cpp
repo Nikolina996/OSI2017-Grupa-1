@@ -5,6 +5,7 @@
 
 #include "Administrator.h"
 #include "User.h"
+std::string tempCurrency = "bam"; //global streaming valute
 
 void Administrator::userMenu()
 {
