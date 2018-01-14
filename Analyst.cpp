@@ -6,6 +6,8 @@
 #include "Windows.h"
 using namespace std;
 
+static string t = ".txt";
+
 void Analyst::userMenu()
 {
 	int i;
@@ -152,6 +154,35 @@ void Analyst::reviewOfProcessedData()
 
 void Analyst::viewingDataForAParticularUser()
 {
+	string name, filename, line; int number; 
+	do {
+		system("CLS");
+		cout << "[0] Back to menu" << endl << "[1] Enter name" << endl;
+		cin >> number;
+		if (number == 1) {
+			cout << "Enter customer name: ";
+			cin >> name;
+			filename = name + t;
+			ifstream file(filename);
+			if (file.is_open())
+			{
+				cout << name << " - purchased products:" << endl;
+				while (!file.eof())
+				{
+					getline(file, line);
+					cout << line << endl;
+
+				}
+				getchar();
+				getchar();
+
+			}
+			else
+				cout << "Could not open info file or file does not exist." << endl;
+		}
+		if(number==0)
+			return;
+	} while (number != 0);
 }
 
 void Analyst::reviewDataForASpecificProduct()
