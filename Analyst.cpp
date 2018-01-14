@@ -166,6 +166,7 @@ void Analyst::viewingDataForAParticularUser()
 			ifstream file(filename);
 			if (file.is_open())
 			{
+				system("CLS");
 				cout << name << " - purchased products:" << endl;
 				while (!file.eof())
 				{
