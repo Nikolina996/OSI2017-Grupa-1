@@ -179,7 +179,7 @@ void Analyst::viewingDataForAParticularUser()
 
 			}
 			else
-				cout << "Could not open info file or file does not exist." << endl;
+				cout << "Could not open info file or there are no users with that name." << endl;
 		}
 		if(number==0)
 			return;
