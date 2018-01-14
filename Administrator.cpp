@@ -202,3 +202,23 @@ void reviewUserAccounts()
 		cout << "Could not open 'korisnici.txt' file." << endl;
 	cout << "_______________________________________________________" << endl;
 }
+
+double currencyConverter(string oldCurrency, string newCurrency, double oldCurrencyValue)
+{
+	/*1 bam = 0.51 e, 1 bam = 0.62 usd, 1 e = 1.95 bam, 1 e = 1.21 usd, 1 usd = 1.6 bam, 1 usd = 0.81 e*/
+	if (oldCurrency == "bam" && newCurrency == "usd")
+		return oldCurrencyValue * 0.62;
+	else if (oldCurrency == "bam" && newCurrency == "euro")
+		return oldCurrencyValue * 0.51;
+	else if (oldCurrency == "usd" && newCurrency == "bam")
+		return oldCurrencyValue * 1.6;
+	else if (oldCurrency == "usd" && newCurrency == "euro")
+		return oldCurrencyValue * 0.81;
+	else if (oldCurrency == "euro" && newCurrency == "bam")
+		return oldCurrencyValue * 1.95;
+	else if (oldCurrency == "euro" && newCurrency == "usd")
+		return oldCurrencyValue * 1.25;
+	else
+		cout << "Currency is already set";
+}
+
