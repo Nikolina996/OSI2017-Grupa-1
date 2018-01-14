@@ -168,7 +168,7 @@ void Analyst::viewingDataForAParticularUser()
 			{
 				system("CLS");
 				cout << name << " - purchased products:" << endl << endl;
-				cout << "DATE NAME&CODE AMOUNT" << endl << endl; 
+				cout << "DATE NAME&CODE AMOUNT PRICE" << endl << endl;
 				while (!file.eof())
 				{
 					getline(file, line);
@@ -223,5 +223,34 @@ void Analyst::reviewDataForASpecificProduct()
 
 void Analyst::viewDataForASpecificMonth()
 {
+		string line, month, year, filename; int number;
+	do
+	{
+		system("CLS");
+		cout << "[0] Back to menu" << endl << "[1] Enter month and year" << endl;
+		cin >> number;
+		if (number == 1)
+		{
+			cout << "Enter month and year: ";
+			cin >> month >> year;
+			filename = month + year + t;
+			ifstream file(filename);
+			if (file.is_open())
+			{
+				system("CLS");
+				cout << month << " " << year << endl << endl;
+				cout << "DATE NAME&CODE AMOUNT CUSTOMER PRICE" << endl << endl;
+				while (!file.eof())
+				{
+					getline(file, line);
+					cout << line << endl;
+				}
+			}
+			else
+				cout << "Could not open info file or there's no data for that month" << endl;
+		}
+		if (number == 0)
+			return;
+	} while (number != 0);
 }
 
