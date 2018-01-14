@@ -8,7 +8,7 @@ public:
 	bool logIn() override;
 	void setAccount() override;
 	void reviewAndManageUserAccounts();
-	void currencyChange();
+	void changeCurrency();
 	void newRequests();
 	void reviewUserAccounts();
 	void deleteUser();
