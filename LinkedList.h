@@ -32,6 +32,6 @@ public:
 	void addArticle(string, string, int, double, double);
 	void inspect();
 	void inputErrorDescription(string);
-	void setBillData(double, double, double, string, string);
+	void setBillData(double, double, double, string, string, string, string);
 	void printBillData();
 };
