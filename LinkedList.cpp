@@ -26,6 +26,8 @@ void LinkedList::copy(const LinkedList &bill)
 	inTotal = bill.inTotal;
 	PDV = bill.PDV;
 	payment = bill.payment;
+	customerName = bill.customerName;
+	date = bill.date;
 }
 
 void LinkedList::move(LinkedList &&bill)
@@ -36,6 +38,8 @@ void LinkedList::move(LinkedList &&bill)
 	inTotal = bill.inTotal;
 	PDV = bill.PDV;
 	payment = bill.payment;
+	customerName = bill.customerName;
+	date = bill.date;
 	head = std::move(bill.head);
 	bill.head = nullptr;
 }
@@ -122,13 +126,15 @@ void LinkedList::inputErrorDescription(string text)
 		cout << "Could not open file." << endl;
 }
 
-void LinkedList::setBillData(double inTotal, double PDV, double payment, string billName, string format)
+void LinkedList::setBillData(double inTotal, double PDV, double payment, string billName, string format, string customerName, string date)
 {
 	this->inTotal = inTotal;
 	this->PDV = PDV;
 	this->payment = payment;
 	this->billName = billName;
 	this->format = format;
+	this->customerName = customerName;
+	this->date = date;
 }
 
 void LinkedList::printBillData()
