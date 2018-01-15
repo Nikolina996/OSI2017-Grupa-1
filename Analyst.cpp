@@ -6,7 +6,7 @@
 #include "Windows.h"
 using namespace std;
 
-static string t = ".txt";
+static string t = ".txt", f1="F1_", f2="F2_", f3="F3_", f4="F4_";
 
 void Analyst::userMenu()
 {
