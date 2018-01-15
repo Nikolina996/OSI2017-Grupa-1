@@ -13,5 +13,9 @@ public:
 	void viewingDataForAParticularUser();
 	void reviewDataForASpecificProduct();
 	void viewDataForASpecificMonth();
+	void getBills();
+	string name();
+	string getname(string, string);
+	bool doesItExist(string, unsigned int, string);
 };
 
