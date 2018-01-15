@@ -19,7 +19,7 @@ private:
 	Article *head;
 	int numberOfNodes;
 	double inTotal, PDV, payment;
-	string billName, format;
+	string customerName, date;
 	void copy(const LinkedList&);
 	void move(LinkedList&&);
 public:
@@ -30,8 +30,8 @@ public:
 	LinkedList& operator = (const LinkedList&);
 	LinkedList& operator = (LinkedList&&);
 	void addArticle(string, string, int, double, double);
-	void inspect();
-	void inputErrorDescription(string);
-	void setBillData(double, double, double, string, string, string, string);
+	void inspect(string);
+	void inputErrorDescription(string, string);
+	void setBillData(double, double, double, string, string);
 	void printBillData();
 };
