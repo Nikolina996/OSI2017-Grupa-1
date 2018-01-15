@@ -254,3 +254,64 @@ void Analyst::viewDataForASpecificMonth()
 	} while (number != 0);
 }
 
+void getBills()
+{
+	string filename; 
+	do {
+		filename = name();
+		//obrada svakog racuna
+	} while (filename != "error");
+}
+
+string name()
+{
+	string filename;
+	filename = getname("F1.txt", f1);
+	if (filename != "Not exist")
+		return filename;
+	else
+		filename = getname("F2.txt", f2);
+	if (filename != "Not exist")
+		return filename;
+	else
+		filename= getname("F3.txt", f3);
+	if (filename != "Not exist")
+		return filename;
+	else
+		filename = getname("F4.txt", f4);
+	if (filename != "Not exist")
+		return filename;
+	return "error";
+}
+
+string getname(string format, string f) 
+{
+	ifstream formatnumber(format);
+	string fs, filename;
+	unsigned int fn;
+	formatnumber >> fn;
+	formatnumber.close();
+	fn += 1;
+	fs = to_string(fn);
+	filename = f + fs + t;
+	if (doesItExist(filename, fn, format))
+		return filename;
+	else
+		return "Not exist";
+}
+
+bool doesItExist(string filename, unsigned int f, string format)
+{
+	ifstream file(filename);
+	if (file.is_open())
+	{
+		fstream formatnumber;
+		formatnumber.open(format, std::fstream::out | std::fstream::trunc);
+		formatnumber << f;
+		formatnumber.close();
+		file.close();
+		return true;
+	}
+	else
+		return false;
+}
