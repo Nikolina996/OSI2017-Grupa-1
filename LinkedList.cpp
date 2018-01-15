@@ -21,8 +21,6 @@ void LinkedList::copy(const LinkedList &bill)
 		}
 	}
 	else head = nullptr;
-	billName = bill.billName;
-	format = bill.format;
 	inTotal = bill.inTotal;
 	PDV = bill.PDV;
 	payment = bill.payment;
@@ -33,8 +31,6 @@ void LinkedList::copy(const LinkedList &bill)
 void LinkedList::move(LinkedList &&bill)
 {
 	numberOfNodes = bill.numberOfNodes;
-	billName = bill.billName;
-	format = bill.format;
 	inTotal = bill.inTotal;
 	PDV = bill.PDV;
 	payment = bill.payment;
@@ -82,7 +78,7 @@ void LinkedList::addArticle(string name, string code, int amount, double price, 
 	numberOfNodes++;
 }
 
-void LinkedList::inspect()
+void LinkedList::inspect(string fileName)
 {
 	double totalSum = 0.0;
 	bool errorCode = false;
@@ -91,55 +87,45 @@ void LinkedList::inspect()
 		if (temp->amount * temp->price != temp->total)
 		{
 			errorCode = true;
-			inputErrorDescription(temp->name + " - Incorrect amount * price value.");
+			inputErrorDescription(temp->name + " - Incorrect amount * price value.", fileName);
 		}
 		totalSum += temp->amount * temp->price;
 	}
 	if (errorCode)
+		return;
+	if ((totalSum * 17) / 100 != PDV)
 	{
-		cout << billName << " - "; 
-		cout << "Invalid bill data. To check description go to this bill's txt file." << endl;
+		inputErrorDescription("PDV incorect.", fileName);
 		return;
 	}
-	if (totalSum + PDV != inTotal)
+	if (totalSum + PDV != payment)
 	{
-		inputErrorDescription("Total price incorrect.");
-		cout << billName << " - ";
-		cout << "Invalid bill data. To check description go to this bill's txt file." << endl;
-		return;
-	}
-	if (totalSum + PDV > payment)
-	{
-		inputErrorDescription("Payment incorrect.");
-		cout << billName << " - ";
-		cout << "Invalid bill data. To check description go to this bill's txt file." << endl << endl;
+		inputErrorDescription("Payment incorrect.", fileName);
+		cout << totalSum << " " << PDV << " " << inTotal << endl;
 		return;
 	}
 }
 
-void LinkedList::inputErrorDescription(string text)
+void LinkedList::inputErrorDescription(string text, string fileName)
 {
-	ofstream file(billName + "_error.txt", ios::app);
+	ofstream file(fileName + "_error.txt", ios::app);
 	if (file.is_open())
 		file << text << endl;
 	else
 		cout << "Could not open file." << endl;
 }
 
-void LinkedList::setBillData(double inTotal, double PDV, double payment, string billName, string format, string customerName, string date)
+void LinkedList::setBillData(double inTotal, double PDV, double payment, string customerName, string date)
 {
 	this->inTotal = inTotal;
 	this->PDV = PDV;
 	this->payment = payment;
-	this->billName = billName;
-	this->format = format;
 	this->customerName = customerName;
 	this->date = date;
 }
 
 void LinkedList::printBillData()
 {
-	cout << billName << "_" << format << endl << endl;
 	int counter = 1;
 	for (Article *A = head; A != nullptr; A = A->next, counter++)
 	{
