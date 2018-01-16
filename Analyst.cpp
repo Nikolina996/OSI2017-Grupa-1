@@ -4,6 +4,7 @@
 #include "Analyst.h"
 #include "User.h"
 #include "Windows.h"
+#include "LinkedList.h"
 using namespace std;
 
 static string t = ".txt", f1="F1_", f2="F2_", f3="F3_", f4="F4_";
@@ -254,37 +255,36 @@ void Analyst::viewDataForASpecificMonth()
 	} while (number != 0);
 }
 
-void getBills()
+void name()
 {
-	string filename; 
-	do {
-		filename = name();
-		//obrada svakog racuna
-	} while (filename != "error");
+	string filename = "*";
+	while (filename != "Not exist"){
+		filename = getname("F1.txt", f1);
+		if (filename != "Not exist")
+			processingFormat1(filename);
+	}
+	filename = getname("F2.txt", f2);
+	while (filename != "Not exist") {
+		if (filename != "Not exist")
+			processingFormat2(filename);
+		filename = getname("F2.txt", f1);
+	}
+	filename = getname("F3.txt", f3);
+	while (filename != "Not exist") {
+		if (filename != "Not exist")
+			processingFormat3(filename);
+		filename = getname("F3.txt", f1);
+	}
+	filename = getname("F4.txt", f4);
+	while (filename != "Not exist") {
+		if (filename != "Not exist")
+			processingFormat4(filename);
+		filename = getname("F4.txt", f1);
+	}
+	return;
 }
 
-string name()
-{
-	string filename;
-	filename = getname("F1.txt", f1);
-	if (filename != "Not exist")
-		return filename;
-	else
-		filename = getname("F2.txt", f2);
-	if (filename != "Not exist")
-		return filename;
-	else
-		filename= getname("F3.txt", f3);
-	if (filename != "Not exist")
-		return filename;
-	else
-		filename = getname("F4.txt", f4);
-	if (filename != "Not exist")
-		return filename;
-	return "error";
-}
-
-string getname(string format, string f) 
+string getname(string format, string f)
 {
 	ifstream formatnumber(format);
 	string fs, filename;
@@ -293,8 +293,8 @@ string getname(string format, string f)
 	formatnumber.close();
 	fn += 1;
 	fs = to_string(fn);
-	filename = f + fs + t;
-	if (doesItExist(filename, fn, format))
+	filename = f + fs;
+	if (doesItExist(filename+t, fn, format))
 		return filename;
 	else
 		return "Not exist";
@@ -314,4 +314,102 @@ bool doesItExist(string filename, unsigned int f, string format)
 	}
 	else
 		return false;
+}
+
+void processingFormat1(string filename)
+{
+	string filen = filename + t;
+	fstream file(filen, ifstream::in);
+	LinkedList bill;
+	string customer, date, productName = "/", code, s1, s2, s3, tempStr = "|";
+	int amount; double price, total, pdv, inTotal, payment;
+	if (file.is_open())
+	{
+		for (; tempStr != "ukupno"; file >> tempStr)
+			if (tempStr == "Kupac:") file >> customer;
+			else if (tempStr == "Datum:") file >> date;
+			file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
+			for (; productName[1] != '-';)
+				bill.addArticle(productName, code, amount, price, total),
+				file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
+	} file.close();
+	fstream fileX(filen, ifstream::in); //nije htjelo sa istim fajlom (file)
+	if (fileX.is_open())
+	{
+
+		while (!fileX.eof())
+		{
+			//cout << fileX.tellp() << endl;
+			fileX >> tempStr;
+			if (tempStr == "Ukupno:") fileX >> inTotal;
+			else if (tempStr == "PDV:") fileX >> pdv;
+			else if (tempStr == "placanje:") fileX >> payment;
+		}
+		//cout << inTotal << pdv << payment << endl;
+	} fileX.close();
+	bill.setBillData(inTotal, pdv, payment, customer, date);
+	bill.printBillData();
+	bill.inspect(filename);
+}
+
+void processingFormat3(string filename)
+{
+	string filen = filename + t;
+	string date, customer, productName = "*", code, tempStr = "*", s1, s2, s3, line = "*";
+	double inTotal, price, PDV, total, payment; int amount;
+	LinkedList bill;
+	fstream file(filen, ifstream::in);
+	if (file.is_open())
+	{
+		while (!file.eof())
+		{
+			file >> tempStr;
+			if (tempStr == "Kupac:") file >> customer;
+			else if (tempStr == "Datum:") file >> date;
+			else if (tempStr == "Ukupno:") file >> inTotal;
+			else if (tempStr == "PDV:") file >> PDV;
+			else if (tempStr == "placanje:") file >> payment;
+		}
+	}
+	bill.setBillData(inTotal, PDV, payment, customer, date);
+	file.close();
+	fstream fileX(filen, ifstream::in);
+	if (fileX.is_open())
+	{
+		for (; tempStr[1] != '-'; fileX >> tempStr);
+		if (tempStr[1] == '-')
+			while (productName[1] != '-')
+			{
+				code = ""; s1 = ""; s2 = "";
+				fileX >> productName >> line;
+				if (productName[1] != '-') {
+					int i = 0;
+					while (line[i] != '=')
+						code.push_back(line[i]), ++i;
+					int length = code.length() + 6, len = line.length();
+					string line1;
+					for (; length < len; length++)
+						line1.push_back(line[length]);
+					line = ""; i = 0;
+					while (line1[i] != '=')
+						s1.push_back(line1[i]), ++i;
+					amount = stoi(s1);
+					length = s1.length() + 6; len = line1.length();
+					for (; length < len; length++)
+						line.push_back(line1[length]);
+					i = 0; line1 = "";
+					while (line[i] != '=')
+						s2.push_back(line[i]), ++i;
+					price = stod(s2);
+					length = s2.length() + 6; len = line.length();
+					for (; length < len; length++)
+						line1.push_back(line[length]);
+					total = stod(line1);
+					bill.addArticle(productName, code, amount, price, total);
+				}
+			}
+		fileX.close();
+		bill.printBillData();
+		bill.inspect(filename);
+	}
 }
