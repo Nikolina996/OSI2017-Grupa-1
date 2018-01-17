@@ -1,47 +1,88 @@
 #include<iostream>
 #include<string>
 #include<fstream>
+#include<iomanip>
+#include<conio.h>
 #include "Analyst.h"
 #include "User.h"
 #include "Windows.h"
 #include "LinkedList.h"
 using namespace std;
 
-static string t = ".txt", f1="F1_", f2="F2_", f3="F3_", f4="F4_";
+static string t = ".txt", f1 = "F1_", f2 = "F2_", f3 = "F3_", f4 = "F4_";
 
-void Analyst::userMenu()
+void Analyst::setUsername(string user)
 {
-	int i;
-	cout<<"/tMastermind Analyze"<<endl;
-	cout << "Enter the number of the option:" << endl <<"[1] Review of processed data" << endl << "[2] Set account" << endl << "[0] Log out" << endl;
-	cin>>i;
-	if (i==0)
-	    User::userMenu();
-	else if (i==1)
-	    reviewOfProcessedData();
-	else if (i==2)
-	    setAccount();
-	else userMenu();
+	username = user; //sets up a private information so that the username can be used in the account setup function 
+					 //without re-entering it
 }
 
-bool Analyst::logIn()
+void Analyst::userMenu() //Analyst menu
+{
+	int i;
+	do {
+		system("CLS");
+		cout << "\t\tMastermind Analyze" << endl << endl;
+		cout << "Enter the number of the option:" << endl << "[1] Review of processed data" << endl << "[2] Set account" << endl << "[0] Log out" << endl;
+		cin >> i;
+		if (i == 0)
+			return;
+		else if (i == 1)
+			reviewOfProcessedData();
+		else if (i == 2)
+			setAccount();
+	} while (i != 1 || i != 2);
+}
+
+bool Analyst::logIn() 
 {
 	string username, PIN, tmpUser, tmpPIN, tmpName, tmpSurname;
-	int check = 1; char c_check;
+	int check = 1; char c_check, ch;
 	do
 	{
+		system("CLS");
+		cout << "\t\tMastermind Analyze" << endl << endl;
 		cout << "Username: "; cin >> username;
-		cout << "Password: "; cin >> PIN;
-		ifstream userFile("korisnici.txt");
-		cout << "Searching through files";
+		cout << "Password: "; 
+		ch = _getch();
+		while (ch != 13) {//character 13 is enter
+			PIN.push_back(ch);
+			cout << '*';
+			ch = _getch();
+		}
+		cout << endl << "Searching through files";
 		for (int i = 0; i < 3; i++) cout << ".", Sleep(1000); cout << endl;
+		ifstream deleted("C:\\MasterMindAnalyze\\Users\\Deleted_users.txt");
+		if (deleted.is_open())
+		{
+			tmpUser = "xxx";
+			while (!deleted.eof() && username != tmpUser) //Check if the user is in the list of deleted users
+				deleted >> tmpName >> tmpSurname >> tmpUser >> tmpPIN;
+			if (username == tmpUser)
+			{
+				cout << endl << "Your account was deleted by administrator." << endl;
+				Sleep(2000);
+				deleted.close();
+				check = 0;
+				return false;
+			}
+		}
+		else
+		{
+			cout << "Could not open info file." << endl;
+			Sleep(2000);
+			return false;
+		}
+		ifstream userFile("C:\\MasterMindAnalyze\\Users\\Users.txt");
 		if (userFile.is_open())
 		{
 			while (!userFile.eof() && username != tmpUser && PIN != tmpPIN)
 				userFile >> tmpName >> tmpSurname >> tmpUser >> tmpPIN;
-			if (username == tmpUser && PIN == tmpPIN)
+			if (username == tmpUser && PIN == tmpPIN) //Check if there is a user and match the codes
 			{
 				cout << "Successful log in!" << endl;
+				setUsername(username);
+				Sleep(2000);
 				userFile.close();
 				check = 0;
 				return true;
@@ -49,18 +90,20 @@ bool Analyst::logIn()
 		}
 		else
 		{
-			cout << "Error. Could not open 'korisnici.txt' file." << endl;
+			cout << "Could not open info file." << endl; 
+			Sleep(2000);
 			return false;
 		}
-		ifstream userFile1("lista_neodobrenih.txt");
+		ifstream userFile1("C:\\MasterMindAnalyze\\Users\\List_of_disapproved_users.txt");
 		if (userFile1.is_open())
 		{
 			tmpUser = "xxx";
-			while (!userFile1.eof() && username != tmpUser)
+			while (!userFile1.eof() && username != tmpUser) //Check if the user is in the list of disapproved users
 				userFile1 >> tmpName >> tmpSurname >> tmpUser >> tmpPIN;
 			if (username == tmpUser)
 			{
-				cout << "Your registration was not approved by admin." << endl;
+				cout << endl << "Your registration was not approved by administrator." << endl;
+				Sleep(2000);
 				userFile1.close();
 				check = 0;
 				return false;
@@ -68,18 +111,20 @@ bool Analyst::logIn()
 		}
 		else
 		{
-			cout << "Error. Could not open 'lista_neodobrenih.txt' file." << endl;
+			cout << "Could not open info file." << endl;
+			Sleep(2000);
 			return false;
 		}
-		ifstream userFile2("lista_cekanja.txt");
+		ifstream userFile2("C:\\MasterMindAnalyze\\Users\\Waiting_list.txt");
 		if (userFile2.is_open())
 		{
 			tmpUser = "xxx";
-			while (!userFile2.eof() && username != tmpUser)
+			while (!userFile2.eof() && username != tmpUser) //Verifying that the user's request is still in the waiting list
 				userFile2 >> tmpName >> tmpSurname >> tmpUser >> tmpPIN;
 			if (username == tmpUser)
 			{
-				cout << "Your registration is waiting for approval." << endl;
+				cout << endl << "Your registration is waiting for approval." << endl;
+				Sleep(2000);
 				userFile2.close();
 				check = 0;
 				return false;
@@ -87,178 +132,240 @@ bool Analyst::logIn()
 		}
 		else
 		{
-			cout << "Could not open 'lista_cekanja.txt' file." << endl;
+			cout << "Could not open info file." << endl;
+			Sleep(2000);
 			return false;
 		}
 		cout << "Username or password do not match." << endl;
-		cout << "Please leave (enter E) if you are a malicious user that never registered here" << endl;
-		cout << "or try again (enter A)" << endl;
+		cout << "[1] Try again" << endl << "[0] Back" << endl;
 		cin >> c_check;
-		system("CLS");
-		if (c_check == 'E') return false;
-	} while (check || c_check == 'A');
+		if (c_check == '0') return false;
+	} while (check || c_check == '1');
 }
 
-void setAccount()
+void Analyst::setAccount()
 {
-	string username, PIN,oldPIN, newPIN, tmpUser; int i, sum=0;
-	tmpUser=getUsername();
-	fstream file("korisnici.txt", ofstream::out | ifstream::in);
+	string PIN, oldPIN, newPIN, tmpUser; 
+	int i, sum = 0;
+	char ch;
+	fstream file("C:\\MasterMindAnalyze\\Users\\Users.txt", ifstream::in);
 	if (file.is_open())
 	{
 		while (!file.eof() && username != tmpUser)
-			file >> username>>oldPIN;
-		i = file.tellp();
-		file.seekp(i-4);
+			file >> tmpUser >> oldPIN;
+		i = file.tellg();
+		i -= 4; //Remembering the position at which the password should be changed
+		file.close();
+	}
+	fstream fileX("C:\\MasterMindAnalyze\\Users\\Users.txt", ofstream::out | ifstream::in);
+	if (fileX.is_open())
+	{
 		do
 		{
-			cout << "Please type in old password: "; cin >> PIN;
+			system("CLS");
+			cout << "\t\tMastermind Analyze" << endl << endl;
+			cout << "Please type in old password: "; 
+			ch = _getch();
+			while (ch != 13) {//character 13 is enter
+				PIN.push_back(ch);
+				cout << '*';
+				ch = _getch();
+			}
 			if (PIN.compare(oldPIN) == 0)
 			{
 				do
 				{
-					cout << "Enter new password: "; cin >> newPIN;
+					cout << endl << "Enter new password: "; //cin >> newPIN; 
+					ch = _getch();
+					while (ch != 13) {//character 13 is enter
+						newPIN.push_back(ch);
+						cout << '*';
+						ch = _getch();
+					}
+					newPIN.shrink_to_fit(); 
 					for (int i = 0; i < 4; i++)
-						if (isdigit(newPIN[i])) sum++;
+						if (isdigit(newPIN[i])) sum++; //Checks if the entered character is a number
 					if (sum != 4)
 					{
-						cout << "Structure of password must be 4 positive numbers." << endl;
+						cout << endl << "Structure of password must be 4 positive numbers." << endl;
 						sum = 0;
 					}
 				} while (sum != 4);
 			}
-			else cout << "Passwords do not match. Enter again:" << endl;
+			else
+			{
+				cout << endl << "Passwords do not match. Enter again:" << endl;
+				Sleep(2000);
+			}
 		} while (PIN.compare(oldPIN) != 0);
-		file << newPIN;
-		cout << "Password successfuly changed!" << endl;
+		fileX.seekg(i);
+		fileX << newPIN;
+		cout << endl << "Password successfuly changed!" << endl;
+		Sleep(2000);
+		fileX.close();
 	}
 	else
-		cout << "Could not open 'users.txt' file" << endl;
+	{
+		cout << "Could not open info file" << endl;
+		Sleep(2000);
+	}
 }
 
-void Analyst::reviewOfProcessedData()
+void Analyst::reviewOfProcessedData() //Analyst submenu
 {
-	int i; 
-	system ("CLS");
-	cout<<"/tMastermind Analyze"<<endl;
-	cout << "Enter the number of the option:" << endl <<"[1] Viewing data for a particular user"<<endl<<"[2] Review data for a specific product"<<endl<<"[3] View data for a specific month"<<endl<<"[0] Back to the menu"<<endl;
-	if (i==1)
-		ViewingDataForAParticularUser();
-	else if(i==2)
-		RewievDataForASpecificProduct();
-	else if (i==3)
-		ViewDataForASpecificMonth(); 
-	else if (i==0)
-		userMenu(); 
-	else reviewOfProcessedData();
+	int i;
+	do {
+		system("CLS");
+		cout << "\t\tMastermind Analyze" << endl << endl;
+		cout << "Enter the number of the option:" << endl << "[1] Viewing data for a particular customer" << endl << "[2] Review data for a specific product" << endl << "[3] View data for a specific month" << endl << "[0] Back to the menu" << endl;
+		cin >> i;
+		if (i == 1)
+			viewingDataForAParticularUser();
+		else if (i == 2)
+			reviewDataForASpecificProduct();
+		else if (i == 3)
+			viewDataForASpecificMonth();
+		else if (i == 0)
+			return;
+	} while (i != 1 || i != 2 || i != 3);
 }
 
 void Analyst::viewingDataForAParticularUser()
 {
-	string name, filename, line; int number; 
-	do {
-		system("CLS");
-		cout << "[0] Back to menu" << endl << "[1] Enter name" << endl;
-		cin >> number;
-		if (number == 1) {
-			cout << "Enter customer name: ";
-			cin >> name;
-			filename = name + t;
-			ifstream file(filename);
-			if (file.is_open())
-			{
-				system("CLS");
-				cout << name << " - purchased products:" << endl << endl;
-				cout << "DATE NAME&CODE AMOUNT PRICE" << endl << endl;
-				while (!file.eof())
-				{
-					getline(file, line);
-					cout << line << endl;
+	string name, filename, date, productname, code, line; int number, amount, numberOfProducts = -1; double price;
 
-				}
-				getchar();
-				getchar();
-
-			}
-			else
-				cout << "Could not open info file or there are no users with that name." << endl;
+	system("CLS");
+	cout << "\t\tMastermind Analyze" << endl << endl;
+	cout << "Enter customer name: ";
+	cin >> name;
+	filename = name + t;
+	ifstream file("C:\\MasterMindAnalyze\\ProcessedData\\"+filename);
+	if (file.is_open())
+	{
+		while (!file.eof())
+		{
+			getline(file, line);
+			numberOfProducts++;
 		}
-		if(number==0)
-			return;
-	} while (number != 0);
+	}
+	file.close();
+	ifstream fileX("C:\\MasterMindAnalyze\\ProcessedData\\" + filename);
+	if (fileX.is_open()) {
+		system("CLS");
+		cout << "\t\tMastermind Analyze" << endl << endl;
+		cout << name << " - purchased products:" << endl << endl;
+		cout << "----------------------------------------------" << endl;
+		cout << left << setw(11) << "DATE" << left << setw(19) << "PRODUCT(name&code)" << left << setw(7) << "AMOUNT" << left << setw(10) << "PRICE" << endl;
+		cout << "----------------------------------------------" << endl;
+		while (numberOfProducts)
+		{
+			fileX >> date >> productname >> code >> amount >> price;
+			cout << left << setw(11) << date << left << setw(11) << productname << left << setw(8) << code << left << setw(7) << amount << left << setw(10) << price << endl;
+			numberOfProducts--;
+		}
+		cout << "----------------------------------------------" << endl;
+	}
+	else
+		cout << "Could not open info file or there are no customers with that name." << endl;
+	fileX.close();
+	cout << "[0] Back" << endl;
+	cin >> number;
+	if (number == 0)
+		return;
 }
 
 void Analyst::reviewDataForASpecificProduct()
 {
-	string code, name, filename, line; int number;
-	do
+	string code, name, filename, date, customer, line; int number, amount, numberOfPurchases=-1;
+	system("CLS");
+	cout << "\t\tMastermind Analyze" << endl << endl;
+	cout << "Enter name: "; cin >> name; cout << "Enter code: "; cin >> code;
+	filename = name + code + t;
+	ifstream file("C:\\MasterMindAnalyze\\ProcessedData\\" + filename);
+	if (file.is_open())
+	{
+		while (!file.eof())
+		{
+			getline(file, line);
+			numberOfPurchases++;
+		}
+	}
+	file.close();
+	ifstream fileX("C:\\MasterMindAnalyze\\ProcessedData\\" + filename);
+	if(fileX.is_open())
 	{
 		system("CLS");
-		cout << "[0] Back to menu" << endl << "[1] Enter code and name of product" << endl;
-		cin >> number;
-		if (number == 1)
+		cout << "\t\tMastermind Analyze" << endl << endl;
+		cout << "Product - " << name << code << endl << endl;
+		cout << "------------------------------------" << endl;
+		cout << left << setw(11) << "DATE" << left << setw(15) << "CUSTOMER" << left << setw(7) << "AMOUNT" << endl;
+		cout << "------------------------------------" << endl;
+		while (numberOfPurchases)
 		{
-			cout << "Enter name and code:"; cin >> name >> code;
-			filename = name + code + t;
-			ifstream file(filename);
-			if (file.is_open())
-			{
-				system("CLS");
-				cout << "Product - " << name << code << endl << endl;
-				cout << "DATE CUSTOMER AMOUNT" << endl << endl;
-				while (!file.eof())
-				{
-					getline(file, line);
-					cout << line << endl;
-				}
-				getchar();
-				getchar();
-			}
-			else
-				cout << "Could not open info file or there are no products with that name and code." << endl;
+			fileX >> date >> customer >> amount;
+			cout << left << setw(11) << date << left << setw(15) << customer << left << setw(7) << amount << endl;
+			numberOfPurchases--;
 		}
-		if (number == 0)
-			return;
-	} while (number != 0);
+		cout << "------------------------------------" << endl;
+	}
+	else
+		cout << "Could not open info file or there are no products with that name and code." << endl;
+	cout << "[0] Back" << endl;
+	fileX.close();
+	cin >> number;
+	if (number == 0)
+		return;
 }
 
 void Analyst::viewDataForASpecificMonth()
 {
-		string line, month, year, filename; int number;
-	do
+	string line, month, year, filename, date, customer, productname, code; 
+	int number, amount, numberOfProducts=-1; 
+	double price;
+	system("CLS");
+	cout << "\t\tMastermind Analyze" << endl << endl;
+	cout << "Enter month: ";
+	cin >> month; cout << "Enter year: "; cin >> year;
+	filename = month + year + t;
+	ifstream file("C:\\MasterMindAnalyze\\ProcessedData\\" + filename);
+	if (file.is_open())
 	{
-		system("CLS");
-		cout << "[0] Back to menu" << endl << "[1] Enter month and year" << endl;
-		cin >> number;
-		if (number == 1)
+		while (!file.eof())
 		{
-			cout << "Enter month and year: ";
-			cin >> month >> year;
-			filename = month + year + t;
-			ifstream file(filename);
-			if (file.is_open())
-			{
-				system("CLS");
-				cout << month << " " << year << endl << endl;
-				cout << "DATE NAME&CODE AMOUNT CUSTOMER PRICE" << endl << endl;
-				while (!file.eof())
-				{
-					getline(file, line);
-					cout << line << endl;
-				}
-			}
-			else
-				cout << "Could not open info file or there's no data for that month" << endl;
+			getline(file, line);
+			numberOfProducts++;
 		}
-		if (number == 0)
-			return;
-	} while (number != 0);
+		file.close();
+	}
+	ifstream fileX("C:\\MasterMindAnalyze\\ProcessedData\\"+filename);
+	if (fileX.is_open()){
+		system("CLS");
+		cout << "\t\tMastermind Analyze" << endl << endl;
+		cout << month << " " << year << endl << endl;
+		cout << "-------------------------------------------------------------" << endl;
+		cout << left << setw(11) << "DATE" << left << setw(19) << "PRODUCT(name&code)" << left << setw(7) << "AMOUNT" << left << setw(10) << "PRICE" << left << setw(15) << "CUSTOMER" << endl;
+		cout << "-------------------------------------------------------------" << endl;
+		while (numberOfProducts)
+		{
+			fileX >> date >> productname >> code >> amount >> price >> customer; 
+			cout << left << setw(11) << date << left << setw(11) << productname << left << setw(8) << code << left << setw(7) << amount << left << setw(10) << price << left << setw(15) << customer << endl;
+			--numberOfProducts;
+		}
+		cout << "-------------------------------------------------------------" << endl;
+	}
+	else
+		cout << "Could not open info file or there's no data for that month" << endl;
+	fileX.close();
+	cout << "[0] Back" << endl;
+	cin >> number;
+	if (number == 0)
+		return;
 }
 
-void name()
+void Analyst::name() //a function that invokes bill-processing functions, depending on the format
 {
 	string filename = "*";
-	while (filename != "Not exist"){
+	while (filename != "Not exist") {
 		filename = getname("F1.txt", f1);
 		if (filename != "Not exist")
 			processingFormat1(filename);
@@ -267,26 +374,26 @@ void name()
 	while (filename != "Not exist") {
 		if (filename != "Not exist")
 			processingFormat2(filename);
-		filename = getname("F2.txt", f1);
+		filename = getname("F2.txt", f2);
 	}
 	filename = getname("F3.txt", f3);
 	while (filename != "Not exist") {
 		if (filename != "Not exist")
 			processingFormat3(filename);
-		filename = getname("F3.txt", f1);
+		filename = getname("F3.txt", f3);
 	}
 	filename = getname("F4.txt", f4);
 	while (filename != "Not exist") {
 		if (filename != "Not exist")
 			processingFormat4(filename);
-		filename = getname("F4.txt", f1);
+		filename = getname("F4.txt", f4);
 	}
 	return;
 }
 
-string getname(string format, string f)
+string Analyst::getname(string format, string f) //Auxiliary function that returns the name of the new bill (if it exists)
 {
-	ifstream formatnumber(format);
+	ifstream formatnumber("C:\\MasterMindAnalyze\\Bills\\FormatInfo\\"+format);
 	string fs, filename;
 	unsigned int fn;
 	formatnumber >> fn;
@@ -294,19 +401,19 @@ string getname(string format, string f)
 	fn += 1;
 	fs = to_string(fn);
 	filename = f + fs;
-	if (doesItExist(filename+t, fn, format))
+	if (doesItExist(filename + t, fn, format))
 		return filename;
 	else
 		return "Not exist";
 }
 
-bool doesItExist(string filename, unsigned int f, string format)
+bool Analyst::doesItExist(string filename, unsigned int f, string format) //An auxiliary function that checks for new raw bills
 {
-	ifstream file(filename);
+	ifstream file("C:\\MasterMindAnalyze\\Bills\\"+filename);
 	if (file.is_open())
 	{
 		fstream formatnumber;
-		formatnumber.open(format, std::fstream::out | std::fstream::trunc);
+		formatnumber.open("C:\\MasterMindAnalyze\\Bills\\FormatInfo\\" + format, std::fstream::out | std::fstream::trunc);
 		formatnumber << f;
 		formatnumber.close();
 		file.close();
@@ -316,10 +423,10 @@ bool doesItExist(string filename, unsigned int f, string format)
 		return false;
 }
 
-void processingFormat1(string filename)
+void Analyst::processingFormat1(string filename)
 {
 	string filen = filename + t;
-	fstream file(filen, ifstream::in);
+	fstream file("C:\\MasterMindAnalyze\\Bills\\"+filen, ifstream::in);
 	LinkedList bill;
 	string customer, date, productName = "/", code, s1, s2, s3, tempStr = "|";
 	int amount; double price, total, pdv, inTotal, payment;
@@ -333,32 +440,71 @@ void processingFormat1(string filename)
 				bill.addArticle(productName, code, amount, price, total),
 				file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
 	} file.close();
-	fstream fileX(filen, ifstream::in); //nije htjelo sa istim fajlom (file)
+	fstream fileX("C:\\MasterMindAnalyze\\Bills\\" + filen, ifstream::in);
 	if (fileX.is_open())
 	{
 
 		while (!fileX.eof())
 		{
-			//cout << fileX.tellp() << endl;
 			fileX >> tempStr;
 			if (tempStr == "Ukupno:") fileX >> inTotal;
 			else if (tempStr == "PDV:") fileX >> pdv;
 			else if (tempStr == "placanje:") fileX >> payment;
 		}
-		//cout << inTotal << pdv << payment << endl;
-	} fileX.close();
+	} 
+	fileX.close();
 	bill.setBillData(inTotal, pdv, payment, customer, date);
-	bill.printBillData();
 	bill.inspect(filename);
+	bill.inputCustomerData();
+	bill.inputMonthData();
+	bill.inputProductData();
 }
 
-void processingFormat3(string filename)
+void Analyst::processingFormat2(string filename)
+{
+	string filen = filename + t;
+	string customer, date, productName = "/", code, s1, s2, s3, tempStr = "|";
+	double price, total, pdv, inTotal, payment; int amount;
+	LinkedList bill;
+	fstream file("C:\\MasterMindAnalyze\\Bills\\" + filen, ifstream::in);
+	if (file.is_open())
+	{
+		for (; tempStr[1] != '-'; file >> tempStr)
+			if (tempStr == "Kupac:") file >> customer;
+		file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
+		while (productName[0] != '-')
+		{
+			bill.addArticle(productName, code, amount, price, total);
+			file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
+		}
+	} file.close();
+	fstream fileX("C:\\MasterMindAnalyze\\Bills\\" + filen, ifstream::in);
+	if (fileX.is_open())
+	{
+		while (!fileX.eof())
+		{
+			fileX >> tempStr;
+			if (tempStr == "Ukupno:") fileX >> inTotal;
+			else if (tempStr == "PDV:") fileX >> pdv;
+			else if (tempStr == "placanje:") fileX >> payment;
+			else if (tempStr == "Datum:") fileX >> date;
+		}
+	} 
+	fileX.close();
+	bill.setBillData(inTotal, pdv, payment, customer, date);
+	bill.inspect(filename);
+	bill.inputCustomerData();
+	bill.inputMonthData();
+	bill.inputProductData();
+}
+
+void Analyst::processingFormat3(string filename)
 {
 	string filen = filename + t;
 	string date, customer, productName = "*", code, tempStr = "*", s1, s2, s3, line = "*";
 	double inTotal, price, PDV, total, payment; int amount;
 	LinkedList bill;
-	fstream file(filen, ifstream::in);
+	fstream file("C:\\MasterMindAnalyze\\Bills\\" + filen, ifstream::in);
 	if (file.is_open())
 	{
 		while (!file.eof())
@@ -373,7 +519,7 @@ void processingFormat3(string filename)
 	}
 	bill.setBillData(inTotal, PDV, payment, customer, date);
 	file.close();
-	fstream fileX(filen, ifstream::in);
+	fstream fileX("C:\\MasterMindAnalyze\\Bills\\" + filen, ifstream::in);
 	if (fileX.is_open())
 	{
 		for (; tempStr[1] != '-'; fileX >> tempStr);
@@ -409,48 +555,19 @@ void processingFormat3(string filename)
 				}
 			}
 		fileX.close();
-		bill.printBillData();
 		bill.inspect(filename);
+		bill.inputCustomerData();
+		bill.inputMonthData();
+		bill.inputProductData();
 	}
 }
-void processingFormat2(string fileName)
+
+void Analyst::processingFormat4(string filename)
 {
-	string customer, date, productName = "/", code, s1, s2, s3, tempStr = "|";
-	double price, total, pdv, inTotal, payment; int amount;
-	LinkedList bill;
-	fstream file(fileName + ".txt", ifstream::in);
-	if (file.is_open())
-	{
-		for (; tempStr[1] != '-'; file >> tempStr)
-			if (tempStr == "Kupac:") file >> customer;
-		file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
-		while (productName[0] != '-')
-		{
-			bill.addArticle(productName, code, amount, price, total);
-			file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
-		}
-	} file.close();
-	fstream fileX(fileName + ".txt", ifstream::in);
-	if (fileX.is_open())
-	{
-		while (!fileX.eof())
-		{
-			fileX >> tempStr;
-			if (tempStr == "Ukupno:") fileX >> inTotal;
-			else if (tempStr == "PDV:") fileX >> pdv;
-			else if (tempStr == "placanje:") fileX >> payment;
-			else if (tempStr == "Datum:") fileX >> date;
-		}
-	} fileX.close();
-	bill.setBillData(inTotal, pdv, payment, customer, date);
-	bill.inspect(fileName);
-	bill.inputMonthData();
-}
-void processingFormat4(string fileName)
-{
+	string filen = filename + t;
 	string customer, date, productName = "/", code, tempStr = "|", s1, s2, s3;
 	double inTotal, pdv, price, total, payment; int amount;
-	fstream file(fileName + ".txt", ifstream::in);
+	fstream file("C:\\MasterMindAnalyze\\Bills\\" + filen, ifstream::in);
 	LinkedList bill;
 	if (file.is_open())
 	{
@@ -463,8 +580,7 @@ void processingFormat4(string fileName)
 			bill.addArticle(productName, code, amount, price, total),
 			file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
 	} file.close();
-	bill.printBillData();
-	fstream fileX(fileName + ".txt", ifstream::in);
+	fstream fileX("C:\\MasterMindAnalyze\\Bills\\" + filen, ifstream::in);
 	if (fileX.is_open())
 	{
 		while (!fileX.eof())
@@ -476,6 +592,8 @@ void processingFormat4(string fileName)
 		}
 	} fileX.close();
 	bill.setBillData(inTotal, pdv, payment, customer, date);
-	//bill.inspect(fileName);
+	bill.inspect(filename);
+	bill.inputCustomerData();
 	bill.inputMonthData();
+	bill.inputProductData();
 }
