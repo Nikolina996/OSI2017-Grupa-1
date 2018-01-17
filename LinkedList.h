@@ -1,4 +1,5 @@
 #pragma once
+//an auxiliary class that contains the data structure, functions for validating the bills, and subscribing to specific text files
 #include <iostream>
 #include <string>
 #include <fstream>
