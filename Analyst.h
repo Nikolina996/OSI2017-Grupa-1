@@ -1,15 +1,18 @@
 #pragma once
 using namespace std;
 #include<iostream>
+#include<string>
 #include "User.h"
 #include "LinkedList.h"
-class Analyst:public User, public LinkedList
+class Analyst :public User, public LinkedList
 {
+private:
+	string username;
 public:
-	void userMenu() override;
-	bool logIn() override;
-	void setAccount() override;
-	string getUsername();
+	void setUsername(string);
+	void userMenu();
+	bool logIn();
+	void setAccount();
 	void reviewOfProcessedData();
 	void viewingDataForAParticularUser();
 	void reviewDataForASpecificProduct();
