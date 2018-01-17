@@ -34,4 +34,7 @@ public:
 	void inputErrorDescription(string, string);
 	void setBillData(double, double, double, string, string);
 	void printBillData();
+	void inputCustomerData();
+	void inputProductData();
+	void inputMonthData();
 };
