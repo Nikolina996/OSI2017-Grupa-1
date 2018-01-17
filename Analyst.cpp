@@ -413,3 +413,69 @@ void processingFormat3(string filename)
 		bill.inspect(filename);
 	}
 }
+void processingFormat2(string fileName)
+{
+	string customer, date, productName = "/", code, s1, s2, s3, tempStr = "|";
+	double price, total, pdv, inTotal, payment; int amount;
+	LinkedList bill;
+	fstream file(fileName + ".txt", ifstream::in);
+	if (file.is_open())
+	{
+		for (; tempStr[1] != '-'; file >> tempStr)
+			if (tempStr == "Kupac:") file >> customer;
+		file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
+		while (productName[0] != '-')
+		{
+			bill.addArticle(productName, code, amount, price, total);
+			file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
+		}
+	} file.close();
+	fstream fileX(fileName + ".txt", ifstream::in);
+	if (fileX.is_open())
+	{
+		while (!fileX.eof())
+		{
+			fileX >> tempStr;
+			if (tempStr == "Ukupno:") fileX >> inTotal;
+			else if (tempStr == "PDV:") fileX >> pdv;
+			else if (tempStr == "placanje:") fileX >> payment;
+			else if (tempStr == "Datum:") fileX >> date;
+		}
+	} fileX.close();
+	bill.setBillData(inTotal, pdv, payment, customer, date);
+	bill.inspect(fileName);
+	bill.inputMonthData();
+}
+void processingFormat4(string fileName)
+{
+	string customer, date, productName = "/", code, tempStr = "|", s1, s2, s3;
+	double inTotal, pdv, price, total, payment; int amount;
+	fstream file(fileName + ".txt", ifstream::in);
+	LinkedList bill;
+	if (file.is_open())
+	{
+		file >> tempStr; file >> customer;
+		file >> tempStr; file >> date;
+		for (; tempStr[1] != '-'; file >> tempStr);
+		tempStr = "textWithNoPoint";
+		file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
+		for (; productName[0] != '-';)
+			bill.addArticle(productName, code, amount, price, total),
+			file >> productName >> code >> s1 >> amount >> s2 >> price >> s3 >> total;
+	} file.close();
+	bill.printBillData();
+	fstream fileX(fileName + ".txt", ifstream::in);
+	if (fileX.is_open())
+	{
+		while (!fileX.eof())
+		{
+			fileX >> tempStr;
+			if (tempStr == "Ukupno:") fileX >> inTotal;
+			else if (tempStr == "PDV:") fileX >> pdv;
+			else if (tempStr == "placanje:") fileX >> payment;
+		}
+	} fileX.close();
+	bill.setBillData(inTotal, pdv, payment, customer, date);
+	//bill.inspect(fileName);
+	bill.inputMonthData();
+}
