@@ -136,3 +136,47 @@ void LinkedList::printBillData()
 		cout << endl;
 	}
 }
+
+void LinkedList::inputCustomerData()
+{
+	ofstream file(customerName + ".txt", ios::app);
+	if (file.is_open())
+		for (Article *A = head; A != nullptr; A = A->next)
+			file << date << " " << A->name << " " << A->code << " " << A->amount << " " << A->price << endl;
+	file.close();
+}
+
+void LinkedList::inputProductData()
+{
+	for (Article *A = head; A != nullptr; A = A->next)
+	{
+		ofstream file(A->name + A->code + ".txt", ios::app);
+		if (file.is_open())
+			file << date << " " << customerName << " " << A->amount;
+		file.close();
+	}
+}
+
+void LinkedList::inputMonthData()
+{
+	string year, month, mon;
+	for (int i = 0, j = 3; i < 2; month.push_back(date[j++]), i++);
+	for (int i = 0, j = 6; i < 4; year.push_back(date[j++]), i++);
+	int checkMon = stoi(month);
+	switch (checkMon)
+	{
+	case 1: mon = "January"; break; case 2: mon = "February"; break;
+	case 3: mon = "March"; break; case 4: mon = "April"; break;
+	case 5: mon = "May"; break; case 6: mon = "June"; break;
+	case 7: mon = "July"; break; case 8: mon = "August"; break;
+	case 9: mon = "September"; break; case 10: mon = "October"; break;
+	case 11: mon = "November"; break; case 12: mon = "December"; break;
+	default: mon = "Error";
+	}
+	ofstream file(mon + year + ".txt", ios::app);
+	if (file.is_open())
+	{
+		for (Article *A = head; A != nullptr; A = A->next)
+			file << date << " " << A->name << " " << A->code << " " << A->amount << " " << A->price << " " << customerName << endl;
+	} file.close();
+}
