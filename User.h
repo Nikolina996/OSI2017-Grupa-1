@@ -6,7 +6,8 @@ class User
 {
 public:
 	virtual bool logIn() = 0;
-	virtual void userMenu();
-	virtual void setAccount() = 0;
+	void userMenu();
 	virtual void signUp();
+	void logInMenu();
+	virtual void setAccount()=0;
 };
