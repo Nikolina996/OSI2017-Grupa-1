@@ -78,7 +78,7 @@ void LinkedList::addArticle(string name, string code, int amount, double price, 
 	numberOfNodes++;
 }
 
-void LinkedList::inspect(string fileName)
+bool LinkedList::inspect(string fileName)
 {
 	double totalSum = 0.0;
 	bool errorCode = false;
@@ -92,18 +92,19 @@ void LinkedList::inspect(string fileName)
 		totalSum += temp->amount * temp->price;
 	}
 	if (errorCode)
-		return;
+		return false;
 	if ((totalSum * 17) / 100 != PDV)
 	{
 		inputErrorDescription("PDV incorect.", fileName);
-		return;
+		return false;
 	}
 	if (totalSum + PDV != payment)
 	{
 		inputErrorDescription("Payment incorrect.", fileName);
 		cout << totalSum << " " << PDV << " " << inTotal << endl;
-		return;
+		return false;
 	}
+	return true;
 }
 
 void LinkedList::inputErrorDescription(string text, string fileName)
