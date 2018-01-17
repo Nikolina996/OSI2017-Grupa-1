@@ -108,7 +108,7 @@ void LinkedList::inspect(string fileName)
 
 void LinkedList::inputErrorDescription(string text, string fileName)
 {
-	ofstream file(fileName + "_error.txt", ios::app);
+	ofstream file("C:\\MasterMindAnalyze\\Bills\\BillsWithErrors\\" + fileName + "_error.txt", ios::app);
 	if (file.is_open())
 		file << text << endl;
 	else
@@ -139,7 +139,7 @@ void LinkedList::printBillData()
 
 void LinkedList::inputCustomerData()
 {
-	ofstream file(customerName + ".txt", ios::app);
+	ofstream file("C:\\MasterMindAnalyze\\ProcessedData\\" + customerName + ".txt", ios::app);
 	if (file.is_open())
 		for (Article *A = head; A != nullptr; A = A->next)
 			file << date << " " << A->name << " " << A->code << " " << A->amount << " " << A->price << endl;
@@ -150,9 +150,9 @@ void LinkedList::inputProductData()
 {
 	for (Article *A = head; A != nullptr; A = A->next)
 	{
-		ofstream file(A->name + A->code + ".txt", ios::app);
+		ofstream file("C:\\MasterMindAnalyze\\ProcessedData\\" + A->name + A->code + ".txt", ios::app);
 		if (file.is_open())
-			file << date << " " << customerName << " " << A->amount;
+			file << date << " " << customerName << " " << A->amount<<endl;
 		file.close();
 	}
 }
@@ -173,7 +173,7 @@ void LinkedList::inputMonthData()
 	case 11: mon = "November"; break; case 12: mon = "December"; break;
 	default: mon = "Error";
 	}
-	ofstream file(mon + year + ".txt", ios::app);
+	ofstream file("C:\\MasterMindAnalyze\\ProcessedData\\" + mon + year + ".txt", ios::app);
 	if (file.is_open())
 	{
 		for (Article *A = head; A != nullptr; A = A->next)
