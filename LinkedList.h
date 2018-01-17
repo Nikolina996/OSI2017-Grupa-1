@@ -31,7 +31,7 @@ public:
 	LinkedList& operator = (const LinkedList&);
 	LinkedList& operator = (LinkedList&&);
 	void addArticle(string, string, int, double, double);
-	void inspect(string);
+	bool inspect(string);
 	void inputErrorDescription(string, string);
 	void setBillData(double, double, double, string, string);
 	void printBillData();
