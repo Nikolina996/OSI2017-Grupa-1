@@ -111,7 +111,7 @@ void Administrator::setAccount()
 
 void Administrator::changeCurrency()
 {
-	cout << "Function is not yet availabe." << endl;
+	cout << "Function will be availabe in next update." << endl;
 	return;
 	//Temporary currency is global string
 	int option; string newCURR;
