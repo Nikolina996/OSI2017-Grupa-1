@@ -1,12 +1,12 @@
 #pragma once
 #include<iostream>
 #include "User.h"
-class Administrator: public User
+class Administrator : public User
 {
 public:
-	void userMenu() override;
-	bool logIn() override;
-	void setAccount() override;
+	void userMenu();
+	bool logIn();
+	void setAccount();
 	void reviewAndManageUserAccounts();
 	void changeCurrency();
 	void newRequests();
@@ -14,4 +14,3 @@ public:
 	void deleteUser();
 	double currencyConverter(std::string, std::string, double);
 };
-
