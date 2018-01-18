@@ -454,10 +454,11 @@ void Analyst::processingFormat1(string filename)
 	} 
 	fileX.close();
 	bill.setBillData(inTotal, pdv, payment, customer, date);
-	bill.inspect(filename);
-	bill.inputCustomerData();
-	bill.inputMonthData();
-	bill.inputProductData();
+	if(bill.inspect(filename)){
+		bill.inputCustomerData();
+		bill.inputMonthData();
+		bill.inputProductData();
+	}
 }
 
 void Analyst::processingFormat2(string filename)
@@ -492,10 +493,11 @@ void Analyst::processingFormat2(string filename)
 	} 
 	fileX.close();
 	bill.setBillData(inTotal, pdv, payment, customer, date);
-	bill.inspect(filename);
-	bill.inputCustomerData();
-	bill.inputMonthData();
-	bill.inputProductData();
+	if(bill.inspect(filename)){
+		bill.inputCustomerData();
+		bill.inputMonthData();
+		bill.inputProductData();
+	}
 }
 
 void Analyst::processingFormat3(string filename)
@@ -555,10 +557,11 @@ void Analyst::processingFormat3(string filename)
 				}
 			}
 		fileX.close();
-		bill.inspect(filename);
-		bill.inputCustomerData();
-		bill.inputMonthData();
-		bill.inputProductData();
+		if(bill.inspect(filename)){
+			bill.inputCustomerData();
+			bill.inputMonthData();
+			bill.inputProductData();
+		}
 	}
 }
 
@@ -592,8 +595,9 @@ void Analyst::processingFormat4(string filename)
 		}
 	} fileX.close();
 	bill.setBillData(inTotal, pdv, payment, customer, date);
-	bill.inspect(filename);
-	bill.inputCustomerData();
-	bill.inputMonthData();
-	bill.inputProductData();
+	if(bill.inspect(filename)){
+		bill.inputCustomerData();
+		bill.inputMonthData();
+		bill.inputProductData();
+	}
 }
