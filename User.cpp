@@ -46,7 +46,7 @@ void User::signUp() //Function for registration
 	}
 	do
 	{
-		cout << "Password: "; 
+		cout << "Password (4 numbers): "; 
 		ch = _getch();
 		while (ch != 13) {//character 13 is enter
 			PIN.push_back(ch);
