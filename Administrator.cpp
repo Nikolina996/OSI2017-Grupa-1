@@ -34,11 +34,12 @@ bool Administrator::logIn()
 	int input;
 	char ch;
 	do {
+		password = "";
 		system("CLS");
 		cout << "\t\tMastermind Analyze" << endl << endl;
 		cout << "Username: ";
 		cin >> username;
-		cout << "Password: ";
+		cout << "Password (If you enter the wrong password, just press 'Enter' and you will be able to\nenter the password again): ";
 		ch = _getch();
 		while (ch != 13) {//character 13 is enter
 			password.push_back(ch);
@@ -89,6 +90,7 @@ void Administrator::setAccount()
 	}
 	do
 	{
+		oldPIN = "";
 		system("CLS");
 		cout << "\t\tMastermind Analyze" << endl << endl;
 		cout << "Please type in old password: ";
@@ -103,6 +105,7 @@ void Administrator::setAccount()
 		{
 			do
 			{
+				PIN = "";
 				cout << endl << "Enter new password: ";
 				ch = _getch();
 				while (ch != 13) {//character 13 is enter
@@ -142,7 +145,7 @@ void Administrator::reviewAndManageUserAccounts() //Administrator submenu
 	do {
 		system("CLS");
 		cout << "\t\tMastermind Analyze" << endl<<endl;
-		cout << "Enter the number of the option:" << endl << "[1] New requests" << endl << "[2] Delete requests" << endl << "[3] Review user accounts" << endl << "[0] Back to the menu" << endl;
+		cout << "Enter the number of the option:" << endl << "[1] New requests" << endl << "[2] Delete user" << endl << "[3] Review user accounts" << endl << "[0] Back to the menu" << endl;
 		cin >> i;
 		if (i == 0)
 			return;
@@ -191,7 +194,8 @@ void Administrator::deleteUser()
 			system("CLS");
 			cout << "\t\tMasterMind Analyze" << endl << endl;
 			cout << "Enter username of the user you want to delete: ";
-			cin >> user;
+			cin >> user; 
+			user.shrink_to_fit();
 			ifstream file("C:\\MasterMindAnalyze\\Users\\Users.txt");
 			if (file.is_open())
 			{
@@ -201,15 +205,16 @@ void Administrator::deleteUser()
 				file.close();
 				size = i - (name.length() + surname.length() + username.length() + PIN.length() + 3);
 			}
-			fstream object("C:\\MasterMindAnalyze\\Users\\Deleted_users.txt", ofstream::out | ofstream::app);
-			object << name << " " << surname << " " << username << " " << PIN << "\n";
-			cout << "User successfully deleted." << endl;
-			object.close();
 			fstream fileX("C:\\MasterMindAnalyze\\Users\\Users.txt", ofstream::out | ifstream::in);
 			if (fileX.is_open())
 			{
 				fileX.seekg(size);
 				fileX << tmp;
+				cout << "User successfully deleted." << endl;
+				Sleep(2000);
+				fstream object("C:\\MasterMindAnalyze\\Users\\Deleted_users.txt", ofstream::out | ofstream::app);
+				object << name << " " << surname << " " << username << " " << PIN << "\n";
+				object.close();
 				fileX.close();
 			}
 		}
@@ -316,14 +321,14 @@ void Administrator::newRequests() //The function that checks are there any new r
 
 void Administrator::reviewUserAccounts()
 {
-	int numberOfUsers = 0; int input;
+	int numberOfUsers = 0, input; 
 	do {
 
 		system("CLS");
 		cout << "\t\tMastermind Analyze" << endl << endl;
 		cout << "List of all registered users:" << endl;
 		ifstream file("C:\\MasterMindAnalyze\\Users\\Users.txt");
-		string name, surname, username, PIN, s1, s2, s3, s4;
+		string name, surname, username, PIN, s1, s2, s3, s4, tmp = "/";
 		cout << "_______________________________________________________" << endl;
 		cout << left << setw(15) << "Name" << left << setw(15) << "Surname" << left << setw(25) << "Username" << endl;
 		cout << "_______________________________________________________" << endl;
@@ -332,8 +337,9 @@ void Administrator::reviewUserAccounts()
 			while (!file.eof())
 			{
 				file >> s1 >> s2 >> s3 >> s4;
-				if(s1[0]!='*')
+				if(s1[0]!='*' && tmp!=s3)
 					numberOfUsers++;
+				tmp = s3;
 			}
 			file.close();
 		}
@@ -343,7 +349,6 @@ void Administrator::reviewUserAccounts()
 			Sleep(2000);
 		}
 		ifstream fileX("C:\\MasterMindAnalyze\\Users\\Users.txt");
-		numberOfUsers--;
 		if (fileX.is_open()) {
 			while (numberOfUsers != 0)
 			{
@@ -358,7 +363,7 @@ void Administrator::reviewUserAccounts()
 		else
 		{
 			cout << "Could not open info file." << endl;
-			Sleep(1000); Sleep(1000);
+			Sleep(2000);
 		}
 		cout << "_______________________________________________________" << endl;
 		cout << "[0] Back" << endl; cin >> input;
