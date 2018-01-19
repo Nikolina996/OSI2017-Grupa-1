@@ -40,10 +40,13 @@ bool Analyst::logIn()
 	int check = 1; char c_check, ch;
 	do
 	{
+		username = "", tmpUser="", tmpPIN="", tmpName="", tmpSurname="";
 		system("CLS");
 		cout << "\t\tMastermind Analyze" << endl << endl;
-		cout << "Username: "; cin >> username;
-		cout << "Password: "; 
+		cout << "Username: "; 
+		cin >> username;
+		cout << "Password (If you enter the wrong password, just press 'Enter' and you will be able to\nenter the password again): ";
+		PIN = "";
 		ch = _getch();
 		while (ch != 13) {//character 13 is enter
 			PIN.push_back(ch);
@@ -55,7 +58,7 @@ bool Analyst::logIn()
 		ifstream deleted("C:\\MasterMindAnalyze\\Users\\Deleted_users.txt");
 		if (deleted.is_open())
 		{
-			tmpUser = "xxx";
+			tmpUser = "", tmpPIN = "", tmpName = "", tmpSurname = "";;
 			while (!deleted.eof() && username != tmpUser) //Check if the user is in the list of deleted users
 				deleted >> tmpName >> tmpSurname >> tmpUser >> tmpPIN;
 			if (username == tmpUser)
@@ -76,6 +79,7 @@ bool Analyst::logIn()
 		ifstream userFile("C:\\MasterMindAnalyze\\Users\\Users.txt");
 		if (userFile.is_open())
 		{
+			tmpUser = "", tmpPIN = "", tmpName = "", tmpSurname = "";
 			while (!userFile.eof() && username != tmpUser && PIN != tmpPIN)
 				userFile >> tmpName >> tmpSurname >> tmpUser >> tmpPIN;
 			if (username == tmpUser && PIN == tmpPIN) //Check if there is a user and match the codes
@@ -97,7 +101,7 @@ bool Analyst::logIn()
 		ifstream userFile1("C:\\MasterMindAnalyze\\Users\\List_of_disapproved_users.txt");
 		if (userFile1.is_open())
 		{
-			tmpUser = "xxx";
+			tmpUser = "", tmpPIN = "", tmpName = "", tmpSurname = "";
 			while (!userFile1.eof() && username != tmpUser) //Check if the user is in the list of disapproved users
 				userFile1 >> tmpName >> tmpSurname >> tmpUser >> tmpPIN;
 			if (username == tmpUser)
@@ -118,7 +122,7 @@ bool Analyst::logIn()
 		ifstream userFile2("C:\\MasterMindAnalyze\\Users\\Waiting_list.txt");
 		if (userFile2.is_open())
 		{
-			tmpUser = "xxx";
+			tmpUser = "", tmpPIN = "", tmpName = "", tmpSurname = "";
 			while (!userFile2.eof() && username != tmpUser) //Verifying that the user's request is still in the waiting list
 				userFile2 >> tmpName >> tmpSurname >> tmpUser >> tmpPIN;
 			if (username == tmpUser)
@@ -139,8 +143,9 @@ bool Analyst::logIn()
 		cout << "Username or password do not match." << endl;
 		cout << "[1] Try again" << endl << "[0] Back" << endl;
 		cin >> c_check;
-		if (c_check == '0') return false;
-	} while (check || c_check == '1');
+		if (c_check == '0') 
+			return false;
+	} while (check && c_check == '1');
 }
 
 void Analyst::setAccount()
@@ -162,6 +167,7 @@ void Analyst::setAccount()
 	{
 		do
 		{
+			PIN = "";
 			system("CLS");
 			cout << "\t\tMastermind Analyze" << endl << endl;
 			cout << "Please type in old password: "; 
@@ -175,6 +181,7 @@ void Analyst::setAccount()
 			{
 				do
 				{
+					newPIN = "";
 					cout << endl << "Enter new password: "; //cin >> newPIN; 
 					ch = _getch();
 					while (ch != 13) {//character 13 is enter
@@ -237,7 +244,7 @@ void Analyst::viewingDataForAParticularUser()
 	system("CLS");
 	cout << "\t\tMastermind Analyze" << endl << endl;
 	cout << "Enter customer name: ";
-	cin >> name;
+	cin >> name; name.shrink_to_fit();
 	filename = name + t;
 	ifstream file("C:\\MasterMindAnalyze\\ProcessedData\\"+filename);
 	if (file.is_open())
@@ -279,7 +286,10 @@ void Analyst::reviewDataForASpecificProduct()
 	string code, name, filename, date, customer, line; int number, amount, numberOfPurchases=-1;
 	system("CLS");
 	cout << "\t\tMastermind Analyze" << endl << endl;
-	cout << "Enter name: "; cin >> name; cout << "Enter code: "; cin >> code;
+	cout << "Enter name: "; 
+	cin >> name; name.shrink_to_fit();
+	cout << "Enter code: "; 
+	cin >> code; code.shrink_to_fit();
 	filename = name + code + t;
 	ifstream file("C:\\MasterMindAnalyze\\ProcessedData\\" + filename);
 	if (file.is_open())
@@ -325,7 +335,9 @@ void Analyst::viewDataForASpecificMonth()
 	system("CLS");
 	cout << "\t\tMastermind Analyze" << endl << endl;
 	cout << "Enter month: ";
-	cin >> month; cout << "Enter year: "; cin >> year;
+	cin >> month; month.shrink_to_fit();
+	cout << "Enter year: "; 
+	cin >> year; year.shrink_to_fit();
 	filename = month + year + t;
 	ifstream file("C:\\MasterMindAnalyze\\ProcessedData\\" + filename);
 	if (file.is_open())
@@ -454,7 +466,7 @@ void Analyst::processingFormat1(string filename)
 	} 
 	fileX.close();
 	bill.setBillData(inTotal, pdv, payment, customer, date);
-	if(bill.inspect(filename)){
+	if (bill.inspect(filename)) {
 		bill.inputCustomerData();
 		bill.inputMonthData();
 		bill.inputProductData();
@@ -493,7 +505,7 @@ void Analyst::processingFormat2(string filename)
 	} 
 	fileX.close();
 	bill.setBillData(inTotal, pdv, payment, customer, date);
-	if(bill.inspect(filename)){
+	if (bill.inspect(filename)) {
 		bill.inputCustomerData();
 		bill.inputMonthData();
 		bill.inputProductData();
@@ -557,7 +569,7 @@ void Analyst::processingFormat3(string filename)
 				}
 			}
 		fileX.close();
-		if(bill.inspect(filename)){
+		if (bill.inspect(filename)) {
 			bill.inputCustomerData();
 			bill.inputMonthData();
 			bill.inputProductData();
@@ -595,7 +607,7 @@ void Analyst::processingFormat4(string filename)
 		}
 	} fileX.close();
 	bill.setBillData(inTotal, pdv, payment, customer, date);
-	if(bill.inspect(filename)){
+	if (bill.inspect(filename)) {
 		bill.inputCustomerData();
 		bill.inputMonthData();
 		bill.inputProductData();
