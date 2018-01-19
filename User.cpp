@@ -33,7 +33,7 @@ void User::signUp() //Function for registration
 				file >> tmpName >> tmpSurname >> tmpUser >> tmpPIN;
 			if (tmpUser == username) { //Checking if the same username already exists
 				cout << "Username already exists. Please enter another." << endl;
-				Sleep(2000);
+				Sleep(1000); Sleep(1000);
 			}
 			else check_user = 0;
 		} while (check_user);
@@ -41,7 +41,7 @@ void User::signUp() //Function for registration
 	else
 	{
 		cout << "Could not open info file" << endl;
-		Sleep(2000);
+		Sleep(1000); Sleep(1000);
 		return;
 	}
 	do
