@@ -122,7 +122,11 @@ void Administrator::setAccount()
 				}
 			} while (sum != 4);
 		}
-		else cout << endl << "Passwords do not match. Enter again:" << endl;
+		else 
+		{
+			cout << endl << "Passwords do not match. Enter again:" << endl;
+			Sleep(2000);
+		}
 	} while (password.compare(oldPIN) != 0);
 	ofstream newInfo("C:\\MasterMindAnalyze\\Users\\Admin_file.txt", ofstream::out | ofstream::trunc);
 	if (newInfo.is_open())
