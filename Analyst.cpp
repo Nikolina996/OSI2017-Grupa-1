@@ -189,7 +189,7 @@ void Analyst::setAccount()
 						cout << '*';
 						ch = _getch();
 					}
-					newPIN.shrink_to_fit(); 
+					newPIN.shrink_to_fit(); //cuts space entry in password
 					for (int i = 0; i < 4; i++)
 						if (isdigit(newPIN[i])) sum++; //Checks if the entered character is a number
 					if (sum != 4)
@@ -244,7 +244,7 @@ void Analyst::viewingDataForAParticularUser()
 	system("CLS");
 	cout << "\t\tMastermind Analyze" << endl << endl;
 	cout << "Enter customer name: ";
-	cin >> name; name.shrink_to_fit();
+	cin >> name; name.shrink_to_fit(); //cuts space entry from name
 	filename = name + t;
 	ifstream file("C:\\MasterMindAnalyze\\ProcessedData\\"+filename);
 	if (file.is_open())
@@ -541,20 +541,22 @@ void Analyst::processingFormat3(string filename)
 			while (productName[1] != '-')
 			{
 				code = ""; s1 = ""; s2 = "";
+				/*put line from code to total in line string*/
 				fileX >> productName >> line;
 				if (productName[1] != '-') {
 					int i = 0;
 					while (line[i] != '=')
-						code.push_back(line[i]), ++i;
-					int length = code.length() + 6, len = line.length();
+						code.push_back(line[i]), ++i; //read code
+					int length = code.length() + 6, len = line.length(); //from where does program take info?
 					string line1;
-					for (; length < len; length++)
+					for (; length < len; length++) //put other data in line1
 						line1.push_back(line[length]);
-					line = ""; i = 0;
-					while (line1[i] != '=')
+					line = ""; i = 0; //reset line to nothing
+					while (line1[i] != '=') //read amount data as string
 						s1.push_back(line1[i]), ++i;
-					amount = stoi(s1);
-					length = s1.length() + 6; len = line1.length();
+					amount = stoi(s1); //convert amount string to int
+					length = s1.length() + 6; len = line1.length(); //from where does program take info?
+					/*repeat*/
 					for (; length < len; length++)
 						line.push_back(line1[length]);
 					i = 0; line1 = "";
