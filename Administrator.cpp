@@ -100,7 +100,7 @@ void Administrator::setAccount()
 			cout << '*';
 			ch = _getch();
 		}
-		oldPIN.shrink_to_fit();
+		oldPIN.shrink_to_fit(); //cuts space entry in password
 		if (password.compare(oldPIN) == 0)
 		{
 			do
@@ -131,7 +131,7 @@ void Administrator::setAccount()
 	ofstream newInfo("C:\\MasterMindAnalyze\\Users\\Admin_file.txt", ofstream::out | ofstream::trunc);
 	if (newInfo.is_open())
 	{
-		PIN.shrink_to_fit();
+		PIN.shrink_to_fit(); //cuts space entry in password
 		newInfo << name << " " << surname << " " << username << " " << PIN;
 		newInfo.close();
 		cout << endl << "Password successfuly changed!" << endl;
