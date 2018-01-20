@@ -12,11 +12,11 @@ using namespace std;
 void main()
 {
 	int i, j;
-	Sleep(3000);
 	Analyst analyst;
 	Administrator admin;
 	User *user1 = &analyst, *user2 = &admin;
 	string username;
+	SetConsoleTitle("MasterMind Analyze");
 	PlaySound(TEXT("Welcome.wav"), NULL, SND_SYNC);
 	do {
 		user1->User::userMenu();
